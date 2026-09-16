@@ -1,0 +1,25 @@
+node_modules
+dist
+dist-ssr
+.vite
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Local QA screenshots captured during the build (not shipped)
+.qa
+
+# The SQLite database and its write-ahead log. Never commit a database: it
+# contains real password hashes and live session rows.
+server/data/
+*.db
+*.db-wal
+*.db-shm

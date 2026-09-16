@@ -1,0 +1,338 @@
+@import 'tailwindcss';
+
+/* ============================================================================
+   LAXMI JEWELLERY — DESIGN TOKENS
+   Light / ivory / champagne-gold system. Never dark. Never neon.
+   ========================================================================== */
+@theme {
+  /* ---- Surface ------------------------------------------------------- */
+  --color-ivory: #f8f5ef; /* primary page background            */
+  --color-cream: #fffdf8; /* cards, elevated surfaces           */
+  --color-champagne: #f2e9d8; /* soft transition wash               */
+  --color-blush: #f7ece6; /* bridal section wash                */
+  --color-line: #e7e0d2; /* hairline dividers                  */
+
+  /* ---- Brand gold ---------------------------------------------------- */
+  --color-gold: #c9a24d;
+  --color-gold-light: #e4c878;
+  --color-gold-deep: #a8813a;
+
+  /* ---- Ink ----------------------------------------------------------- */
+  --color-ink: #211e19; /* headings, primary text             */
+  --color-muted: #777066; /* body copy, captions                */
+  --color-faint: #a9a29a; /* meta, disabled                     */
+
+  /* ---- Accent (used sparingly) --------------------------------------- */
+  --color-accent: #8b2331;
+
+  /* ---- Type ---------------------------------------------------------- */
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Times New Roman', serif;
+  --font-sans: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* ---- Breakpoints (320 / 375 / 390 / 430 / 768 / 1024 / 1280 / 1440 / 1920) */
+  --breakpoint-xs: 23.4375rem; /* 375px */
+  --breakpoint-sm: 26.875rem; /* 430px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 90rem; /* 1440px */
+  --breakpoint-3xl: 120rem; /* 1920px */
+
+  /* ---- Easing -------------------------------------------------------- */
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-swift: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* ---- Radii — jewellery is faceted, not bubbly ---------------------- */
+  --radius-facet: 2px;
+
+  /* ---- Motion -------------------------------------------------------- */
+  --animate-shimmer: shimmer 3.4s var(--ease-silk) infinite;
+  --animate-drift: drift 9s ease-in-out infinite;
+  --animate-draw: draw 2.8s var(--ease-silk) forwards;
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 520;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-120%);
+    }
+    100% {
+      transform: translateX(220%);
+    }
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+@layer base {
+  :root {
+    color-scheme: light;
+    --nav-h: 4.5rem;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* `clip` (not `hidden`) — keeps position:sticky working for pinned sections */
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns scrolling */
+  }
+
+  body {
+    margin: 0;
+    overflow-x: clip;
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 28%, transparent);
+  }
+
+  /* Visible, accessible focus ring (outline, never box-shadow) */
+  :focus-visible {
+    outline: 1.5px solid var(--color-gold-deep);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Keyboard users get past the nav without tabbing through it first */
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 50%;
+    z-index: 200;
+    transform: translate(-50%, -180%);
+    padding: 0.7rem 1.4rem;
+    background: var(--color-ink);
+    color: var(--color-cream);
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    transition: transform 0.35s var(--ease-silk);
+  }
+  .skip-link:focus-visible {
+    transform: translate(-50%, 0);
+  }
+
+  /* Scrollbar — whisper quiet */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ivory);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-gold) 45%, transparent);
+    border-radius: 99px;
+  }
+}
+
+/* ============================================================================
+   LENIS  (inlined so we do not depend on a deep CSS import path)
+   ========================================================================== */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ============================================================================
+   UTILITIES
+   ========================================================================== */
+@utility shell {
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  /* fluid gutters: 20px @320 → 48px @1440+, no media-query cliff edges */
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Fluid display type — no media-query cliff edges */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.75rem, 9vw, 9rem);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.125rem, 6vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.625rem, 3.6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * Hero display type — the only display size on the site that has to respond to
+ * viewport HEIGHT as well as width.
+ *
+ * Every other heading sits in normal flow, so a tall line of type just makes the
+ * page taller. The hero's heading lives inside a `100dvh` sticky stage, so on a
+ * short window it has nowhere to go. The width-only `10.5vw` clamp pinned it at
+ * 120px whether the window was 900px tall or 443px, and below ~814px of height
+ * the eyebrow slid up underneath the fixed 85px navbar.
+ *
+ * The `calc(47vh - 148px)` term is calibrated against the *measured* left
+ * column, not guessed. Reading the real box positions off the page gives:
+ *
+ *   CTA bottom = topPad + (1.8 x font-size + 78) + 2 x gap + 118
+ *
+ * where `topPad` is the heading's `pt` and `gap` is the shared `pb`/`pt` on the
+ * heading and tagline (both in Hero.jsx). Requiring that to fit the viewport
+ * solves to `F <= (height - 292 - 2 x gap) / 1.8`, which is a straight line
+ * through the measured points (400px -> 46.7) and (500px -> 98.9), i.e.
+ * `52.2vh - 162px`. This uses a deliberately looser `47vh - 148px` so the type
+ * starts shrinking before the column is completely full.
+ *
+ * At 1440x900 the term evaluates to 275px, so the 7.5rem cap still wins and the
+ * desktop design is untouched. It only engages below ~570px tall. Verified with
+ * no navbar overlap, no CTA clipping and no horizontal overflow at 900 / 800 /
+ * 700 / 660 / 600 / 500 / 443 / 400 tall, and at 1280 and 1024 wide.
+ */
+@utility display-hero {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.5rem, min(10.5vw, calc(47vh - 148px)), 7.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+/* Editorial body copy measure */
+@utility measure {
+  max-width: 62ch;
+}
+
+/* Gold hairline that can be scaled/drawn by GSAP */
+@utility gold-rule {
+  height: 1px;
+  width: 100%;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 70%, transparent) 12%,
+    color-mix(in srgb, var(--color-gold) 70%, transparent) 88%,
+    transparent
+  );
+}
+
+/* Frosted glass used by the navbar / overlays (light theme) */
+@utility frosted {
+  background: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* ============================================================================
+   REDUCED MOTION — kill everything decorative
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
